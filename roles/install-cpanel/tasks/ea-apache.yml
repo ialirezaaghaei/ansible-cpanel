@@ -1,0 +1,36 @@
+---
+- name: Create a directory for custom profiles Easy Apache
+  file:
+    path: /etc/cpanel/ea4/profiles/custom
+    state: directory
+
+
+- name: Copy my EasyApache profile......
+  copy:
+    src: etc/cpanel/ea4/profiles/custom/my-74-82.json
+    dest: /etc/cpanel/ea4/profiles/custom/my-74-82.json
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Building my EasyApache profile. Please wait......
+  command: /usr/local/bin/ea_install_profile --install my-74-82.json
+
+- name: Adding PHP 7.4
+  command: /usr/local/cpanel/bin/rebuild_phpconf --ea-php74=suphp
+
+- name: Adding PHP 8.0
+  command: /usr/local/cpanel/bin/rebuild_phpconf --ea-php80=suphp
+
+- name: Adding PHP 8.1
+  command: /usr/local/cpanel/bin/rebuild_phpconf --ea-php81=suphp
+
+- name: Adding PHP 8.2
+  command: /usr/local/cpanel/bin/rebuild_phpconf --ea-php82=suphp
+
+
+- name: Restart service httpd
+  service:
+    name: httpd
+    state: restarted
+...

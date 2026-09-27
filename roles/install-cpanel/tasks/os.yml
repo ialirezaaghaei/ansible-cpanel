@@ -1,0 +1,38 @@
+---
+- name: Upgrade all packages
+  package:
+    name: '*'
+    state: latest
+
+- name: Reboot a Server & updates to apply
+  reboot:
+    reboot_timeout: 600
+
+
+- name: Disable and stoping firewalld if exists
+  systemd:
+    service: firewalld
+    enabled: no
+    state: stopped
+  register: result_systemd_stop
+  failed_when: "result_systemd_stop is failed and 'Could not find the requested service' not in result_systemd_stop.msg"
+
+
+- name: Ensure SELinux is set to disabled mode
+  lineinfile:
+    path: /etc/selinux/config
+    regexp: '^SELINUX='
+    line: SELINUX=disabled
+
+
+- name: Install requirements WHM/Cpanel
+  package:
+    name:
+      - tar
+      - perl
+      - wget
+      - curl
+      - python2
+      - python3
+    state: present
+...

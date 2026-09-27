@@ -1,0 +1,14 @@
+---
+- name: Config & Tune MariaDB
+  copy:
+    src: etc/my.cnf
+    dest: /etc/my.cnf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Restart service MariaDB
+  service:
+    name: mariadb
+    state: restarted
+...

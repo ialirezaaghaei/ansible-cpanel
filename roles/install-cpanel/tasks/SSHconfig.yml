@@ -1,0 +1,12 @@
+---
+- name: Set SSH port
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^#Port"
+    line: "Port 8933"
+
+- name: Restart service SSHd
+  service:
+    name: sshd
+    state: restarted
+...

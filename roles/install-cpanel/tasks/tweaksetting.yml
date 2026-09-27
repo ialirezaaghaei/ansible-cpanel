@@ -1,0 +1,14 @@
+---
+- name: Config TweakSetting
+  shell: |
+    whmapi1 set_tweaksetting key=resetpass value=0
+    whmapi1 set_tweaksetting key=resetpass_sub value=0
+    whmapi1 set_tweaksetting key=referrerblanksafety value=1
+    whmapi1 set_tweaksetting key=cgihidepass value=1
+    whmapi1 set_tweaksetting key=maxemailsperhour value=200
+    whmapi1 set_tweaksetting key=email_outbound_spam_detect_threshold value=500
+    whmapi1 set_tweaksetting key=emailsperdaynotify value=500
+    whmapi1 set_tweaksetting key=skipboxtrapper value=1
+    whmapi1 set_tweaksetting key=referrersafety value=1
+    whmapi1 set_tweaksetting key=proxysubdomains value=0
+...

@@ -1,0 +1,40 @@
+---
+- name: Download CSF
+  get_url:
+    url: https://download.configserver.com/csf.tgz
+    dest: /usr/src
+
+- name: Unarchive CSF source
+  unarchive:
+    src: /usr/src/csf.tgz
+    dest: /usr/src
+    remote_src: yes
+
+- name: Install CSF
+  shell: bash /usr/src/csf/install.sh
+  args:
+    chdir: /usr/src/csf
+    creates: /usr/sbin/csf
+
+- name: Starting CSF firewall Tunning Please Wait...
+  lineinfile:
+    dest: /etc/csf/csf.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: '^TESTING = "1"', line: 'TESTING = "0"' }
+    - { regexp: '^RESTRICT_SYSLOG = "0"', line: 'RESTRICT_SYSLOG = "3"' }
+    - { regexp: '^SYSLOG_CHECK = "0"', line: 'SYSLOG_CHECK = "1200"' }
+    - { regexp: '^LF_DIRWATCH_DISABLE = "0"', line: 'LF_DIRWATCH_DISABLE = "1"' }
+    - { regexp: '^CT_LIMIT = "0"', line: 'CT_LIMIT = "200"' }
+    - { regexp: '^PT_LIMIT = "60"', line: 'PT_LIMIT = "0"' }
+    - { regexp: '^ICMP_IN_RATE = "1/s"', line: 'ICMP_IN_RATE = "0"' }
+    - { regexp: '^TCP_IN =', line: 'TCP_IN = "20,21,22,25,53,80,110,143,443,465,587,853,993,995,2077,2078,2079,2080,2082,2083,2086,2087,2095,2096,8933"' }
+    - { regexp: '^TCP_OUT =', line: 'TCP_OUT = "20,21,22,25,37,43,53,80,110,113,443,465,587,853,873,993,995,2086,2087,2089,2703"' }
+
+- name: Restart service CSF
+  service:
+    name: csf
+    state: started
+    enabled: yes
+...

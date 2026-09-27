@@ -1,0 +1,37 @@
+---
+- name: Copy & Tune php.ini File For ea-php74
+  copy:
+    src: opt/cpanel/ea-php74/root/etc/php.ini
+    dest: /opt/cpanel/ea-php74/root/etc/php.ini
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy & Tune php.ini File For ea-php80
+  copy:
+    src: opt/cpanel/ea-php80/root/etc/php.ini
+    dest: /opt/cpanel/ea-php80/root/etc/php.ini
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy & Tune php.ini File For ea-php81
+  copy:
+    src: opt/cpanel/ea-php81/root/etc/php.ini
+    dest: /opt/cpanel/ea-php81/root/etc/php.ini
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy & Tune php.ini File For ea-php82
+  copy:
+    src: opt/cpanel/ea-php82/root/etc/php.ini
+    dest: /opt/cpanel/ea-php82/root/etc/php.ini
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Restart service httpd
+  service:
+    name: httpd
+    state: restarted

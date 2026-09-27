@@ -1,0 +1,55 @@
+---
+- name: Change HostName
+  shell:
+    whmapi1 sethostname hostname=server.{{ DOMAIN }}
+
+- name: Basic WebHost Manager® Setup
+  lineinfile:
+    dest: /etc/wwwacct.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: '^NS', line: 'NS ns1.{{ DOMAIN }}' }
+    - { regexp: '^NS2', line: 'NS2 ns2.{{ DOMAIN }}' }
+
+- name: Copy DNS Zone File For NS1
+  copy:
+    src: var/named/ns1.domain.tld.db
+    dest: /var/named/ns1.domain.tld.db
+
+- name: Copy DNS Zone File For NS2
+  copy:
+    src: var/named/ns2.domain.tld.db
+    dest: /var/named/ns2.domain.tld.db
+
+- name: Rename File DNS Zone NS1
+  copy:
+    src: /var/named/ns1.domain.tld.db
+    dest: /var/named/ns1.{{ DOMAIN }}.db
+    remote_src: yes
+
+- name: Rename File DNS Zone NS2
+  copy:
+    src: /var/named/ns2.domain.tld.db
+    dest: /var/named/ns2.{{ DOMAIN }}.db
+    remote_src: yes
+
+- name: Remove old File DNS1
+  file: path=/var/named/ns1.domain.tld.db state=absent
+
+- name: Remove old File DNS2
+  file: path=/var/named/ns2.domain.tld.db state=absent
+
+
+- name: Edit DNSzone File NS
+  shell: |
+    sed -i 's/1.1.1.1/{{ IP }}/g' /var/named/ns1.{{ DOMAIN }}.db
+    sed -i 's/domain.tld/{{ DOMAIN }}/g' /var/named/ns1.{{ DOMAIN }}.db
+    sed -i 's/1.1.1.1/{{ IP }}/g' /var/named/ns2.{{ DOMAIN }}.db
+    sed -i 's/domain.tld/{{ DOMAIN }}/g' /var/named/ns2.{{ DOMAIN }}.db
+
+- name: Remove  old DNS file Domain
+  file:
+    path: /var/named/{{ DOMAIN }}.db
+    state: absent
+...

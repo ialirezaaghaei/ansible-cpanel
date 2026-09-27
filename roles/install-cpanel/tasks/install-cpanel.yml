@@ -1,0 +1,21 @@
+---
+- name: Download Script Cpanel
+  get_url:
+    url: "https://securedownloads.cpanel.net/latest"
+    dest: /home
+    mode: 0755
+
+- name: Install Cpanel
+  command: /bin/bash /home/latest
+  args:
+    chdir: /home
+    creates: /root/installer.lock
+  async: 10400 #wait up-to 90 minutes was 5400
+  poll: 300 #check every 5 minutes
+  register: cpanel_install_completed
+
+- name: Wait for Cpanel to install...
+  wait_for:
+    path: /var/log/cpanel-install.log
+    search_regex: "Thank you for installing cPanel"
+...

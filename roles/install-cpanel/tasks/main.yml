@@ -1,0 +1,61 @@
+---
+- name: Install OS Pre-requisites
+  include_tasks: os.yml
+  tags:
+    - os
+
+- name: Install Cpanel
+  include_tasks: install-cpanel.yml
+  tags:
+    - installcpanel
+
+- name: Easy Apache AutoConfig
+  include_tasks: ea-apache.yml
+  tags:
+    - ea-apache
+
+- name: Copy & Tune php.ini
+  include_tasks: phptune.yml
+  tags:
+    - phptune
+
+- name: CSF firewall Install & Tune
+  include_tasks: csftune.yml
+  tags:
+    - csftune
+
+- name: Config TweakSetting
+  include_tasks: tweaksetting.yml
+  tags:
+    - tweaksetting
+
+- name: setup pure-ftpd server
+  include_tasks: ftp.yml
+  tags:
+    - ftp
+
+- name: Config & Tune MariaDB
+  include_tasks: database.yml
+  tags:
+    - database
+
+- name: Active license WHM/Cpanel
+  include_tasks: license.yml
+  tags:
+    - license
+
+- name: Change HostName & DNS Zone
+  include_tasks: hostname-ns.yml
+  tags:
+    - hostname-ns
+
+- name: Create Account Cpanel
+  include_tasks: create-user-cpanel.yml
+  tags:
+    - create-user-cpanel
+
+- name: Config SSH
+  include_tasks: SSHconfig.yml
+  tags:
+    - SSHconfig
+...

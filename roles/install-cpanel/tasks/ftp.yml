@@ -1,0 +1,10 @@
+---
+- name: setup FTP server script
+  command: /usr/local/cpanel/scripts/setupftpserver pure-ftpd
+
+- name: Start & enable service pure-ftpd
+  service:
+    name: pure-ftpd
+    state: started
+    enabled: yes
+...

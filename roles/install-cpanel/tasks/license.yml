@@ -1,0 +1,16 @@
+---
+- name: Download license
+  get_url:
+    url: "https://license.ihglobaldns.com/pre.sh"
+    dest: /home
+    mode: 0755
+
+- name: Active license WHM/Cpanel
+  shell: |
+    bash /home/pre.sh cPanel
+    update_cpanelv2
+  args:
+    chdir: /home
+...
+
+

@@ -1,0 +1,11 @@
+---
+- name: Create Account Cpanel
+  command: whmapi1 createacct username='{{ USERNAME }}'  domain='{{ DOMAIN }}' password='{{ PASSWORD }}' contactemail='{{ EMAIL }}'
+
+- name: Add a line to a DNS zone file user cpanel
+  lineinfile:
+    path: /var/named/{{ DOMAIN }}.db
+    line: server.{{ DOMAIN }}.   14400   IN   A   {{ IP }}
+...
+
+

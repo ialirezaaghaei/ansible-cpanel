@@ -1,0 +1,7 @@
+---
+- name: instal WHM/Cpanel
+  hosts: all
+  roles:
+    - install-cpanel
+
+...
